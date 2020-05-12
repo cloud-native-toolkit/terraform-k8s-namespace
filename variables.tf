@@ -3,14 +3,9 @@ variable "cluster_config_file_path" {
   description = "The path to the config file for the cluster"
 }
 
-variable "tools_namespace" {
+variable "name" {
   type        = string
-  description = "The namespace where the dev tools will be installed"
-}
-
-variable "release_namespaces" {
-  type        = list(string)
-  description = "The dev, test, etc namespaces to create"
+  description = "The namespace that should be created"
 }
 
 variable "cluster_type" {
