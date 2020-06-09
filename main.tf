@@ -22,7 +22,7 @@ resource "null_resource" "delete_release_namespaces" {
   count      = length(var.release_namespaces)
 
   provisioner "local-exec" {
-    command = "kubectl delete namespace ${var.release_namespaces[count.index]} --wait || exit 0"
+    command = "${path.module}/scripts/deleteNamespace.sh ${var.release_namespaces[count.index]}"
 
     environment = {
       KUBECONFIG = var.cluster_config_file_path
