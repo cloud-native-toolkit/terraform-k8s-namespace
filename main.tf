@@ -5,7 +5,7 @@ provider "null" {}
 
 resource "null_resource" "delete_namespace" {
   provisioner "local-exec" {
-    command = "kubectl delete namespace ${var.name} --wait || exit 0"
+    command = "${path.module}/scripts/deleteNamespace.sh ${var.name}"
 
     environment = {
       KUBECONFIG = var.cluster_config_file_path
