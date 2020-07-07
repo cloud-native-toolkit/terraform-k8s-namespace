@@ -10,12 +10,18 @@ if [[ -z "${NAMESPACE}" ]]; then
 fi
 
 kubectl get namespaces "${NAMESPACE}" 1> /dev/null 2> /dev/null && \
-  kubectl delete namespace "${NAMESPACE}" --wait --timeout=30s
+  kubectl delete namespace "${NAMESPACE}" --wait --timeout=60s
 
 if kubectl get namespaces "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
   echo "Delete namespace failed for ${NAMESPACE}. Killing the namespace..."
   "${SCRIPT_DIR}/kill-kube-ns" "${NAMESPACE}"
-  kubectl delete namespace "${NAMESPACE}" --wait --timeout=60s
+  kubectl delete namespace "${NAMESPACE}" --wait --timeout=90s
 fi
 
-exit 0
+if kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
+  echo "Timed out waiting for namespace to be deleted: ${NAMESPACE}"
+  exit 1
+else
+  echo "Namespace deleted successfully: ${NAMESPACE}"
+  exit 0
+fi
