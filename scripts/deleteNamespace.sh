@@ -15,6 +15,7 @@ kubectl get namespaces "${NAMESPACE}" 1> /dev/null 2> /dev/null && \
 if kubectl get namespaces "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
   echo "Delete namespace failed for ${NAMESPACE}. Killing the namespace..."
   "${SCRIPT_DIR}/kill-kube-ns" "${NAMESPACE}"
+  kubectl delete namespace "${NAMESPACE}" --wait --timeout=60s
 fi
 
 exit 0
