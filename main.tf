@@ -36,11 +36,11 @@ resource "null_resource" "create_namespace" {
   }
 }
 
-resource "null_resource" "copy_apikey_secret" {
+resource "null_resource" "copy_cloudnative_secrets" {
   depends_on = [null_resource.create_namespace]
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/copy-secret-to-namespace.sh ibmcloud-apikey ${var.name}"
+    command = "${path.module}/scripts/copy-cloudnative-resources-to-namespace.sh secret ${var.name}"
 
     environment = {
       KUBECONFIG = var.cluster_config_file_path
@@ -48,11 +48,11 @@ resource "null_resource" "copy_apikey_secret" {
   }
 }
 
-resource "null_resource" "copy_cloud_configmap" {
+resource "null_resource" "copy_cloudnative_configmaps" {
   depends_on = [null_resource.create_namespace]
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/copy-configmap-to-namespace.sh ibmcloud-config ${var.name}"
+    command = "${path.module}/scripts/copy-cloudnative-resources-to-namespace.sh configmap ${var.name}"
 
     environment = {
       KUBECONFIG = var.cluster_config_file_path
