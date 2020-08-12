@@ -39,9 +39,9 @@ CONFIG_URLS=$(kubectl get configmap -n "${NAMESPACE}" -l grouping=garage-cloud-n
 echo "Validating config urls:"
 echo "${CONFIG_URLS}"
 
-echo "${CONFIG_URLS}" | while read url; do
+echo "${CONFIG_URLS}" | while read -r url; do
   if [[ -n "${url}" ]]; then
-    ${SCRIPT_DIR}/waitForEndpoint.sh "${url}" 10 10
+    "${SCRIPT_DIR}/waitForEndpoint.sh" "${url}" 10 10
   fi
 done
 
