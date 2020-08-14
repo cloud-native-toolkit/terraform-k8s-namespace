@@ -9,8 +9,7 @@ if [[ -z "${NAMESPACE}" ]]; then
     exit 1
 fi
 
-kubectl get namespaces "${NAMESPACE}" 1> /dev/null 2> /dev/null && \
-  kubectl delete namespace "${NAMESPACE}" --wait --timeout=60s
+kubectl delete namespace "${NAMESPACE}" --timeout=20m --ignore-not-found=true
 
 if kubectl get namespaces "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
   echo "Delete namespace failed for ${NAMESPACE}. Killing the namespace..."
