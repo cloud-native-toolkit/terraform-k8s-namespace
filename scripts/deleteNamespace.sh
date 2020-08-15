@@ -13,7 +13,7 @@ kubectl delete namespace "${NAMESPACE}" --timeout=20m --ignore-not-found=true
 
 if kubectl get namespaces "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
   echo "Delete namespace failed for ${NAMESPACE}. Deleting pods..."
-  kubectl delete pods -n "${NAMESPACE}" --all --force=true --grace-period=0
+  kubectl delete pods -n "${NAMESPACE}" --all --force --grace-period=0
   kubectl delete namespace "${NAMESPACE}" --timeout=90s
 fi
 
