@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
+
 print_usage() {
     echo "Missing required arguments"
     echo "Usage: $0 {KIND} {TO_NAMESPACE} [{FROM_NAMESPACE}]"
@@ -42,6 +44,6 @@ while read -r name; do
   else
     echo "*** Copying ${KIND}/${name} from ${FROM_NAMESPACE} namespace to ${TO_NAMESPACE} namespace"
 
-    kubectl get "${KIND}/${name}" -n "${FROM_NAMESPACE}" -o yaml --export | kubectl apply -n "${TO_NAMESPACE}" -f -
+    "${SCRIPT_DIR}/kubectl-export.sh" "${KIND}" "${name}" "${FROM_NAMESPACE}" | kubectl apply -n "${TO_NAMESPACE}" -f -
   fi
 done
