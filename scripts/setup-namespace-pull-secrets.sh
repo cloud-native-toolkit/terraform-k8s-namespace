@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
+
 CLUSTER_NAMESPACE="$1"
 if [[ -z "${CLUSTER_NAMESPACE}" ]]; then
    echo "CLUSTER_NAMESPACE should be provided as first argument"
@@ -14,7 +16,8 @@ if [[ $(kubectl get secrets -n "${CLUSTER_NAMESPACE}" -o jsonpath='{ range .item
     echo "*** Copying pull secrets from default namespace to ${CLUSTER_NAMESPACE} namespace"
 
     kubectl get secrets -n default | grep icr | sed "s/\([A-Za-z-]*\) *.*/\1/g" | while read default_secret; do
-        kubectl get secret ${default_secret} -n default -o yaml --export | sed "s/name: default-/name: /g" | kubectl -n ${CLUSTER_NAMESPACE} create -f -
+        NAME=$(echo "${default_secret}" | sed "s/default-//g")
+        "${SCRIPT_DIR}/kubectl-export.sh" secret "${default_secret}" default | jq --arg NAME "${NAME}" '.metadata.name = $NAME' | kubectl -n "${CLUSTER_NAMESPACE}" create -f -
     done
 else
     echo "*** Pull secrets already exist on ${CLUSTER_NAMESPACE} namespace"
