@@ -59,15 +59,3 @@ resource "null_resource" "copy_cloudnative_configmaps" {
     }
   }
 }
-
-resource "null_resource" "create_pull_secrets" {
-  depends_on = [null_resource.create_namespace]
-
-  provisioner "local-exec" {
-    command = "${path.module}/scripts/setup-namespace-pull-secrets.sh ${var.name}"
-
-    environment = {
-      KUBECONFIG = var.cluster_config_file_path
-    }
-  }
-}
