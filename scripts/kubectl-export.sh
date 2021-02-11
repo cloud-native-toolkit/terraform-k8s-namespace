@@ -18,4 +18,6 @@ if ! command -v jq &> /dev/null; then
   export PATH="$PATH:${TMP_DIR}/bin"
 fi
 
-kubectl get "${KIND}/${RESOURCE}" ${NAMESPACE} -o json | jq 'del(.metadata.uid) | del(.metadata.selfLink) | del(.metadata.resourceVersion) | del(.metadata.namespace) | del(.metadata.creationTimestamp)'
+if kubectl get "${KIND}/${RESOURCE}" ${NAMESPACE} 1> /dev/null 2> /dev/null; then
+  kubectl get "${KIND}/${RESOURCE}" ${NAMESPACE} -o json | jq 'del(.metadata.uid) | del(.metadata.selfLink) | del(.metadata.resourceVersion) | del(.metadata.namespace) | del(.metadata.creationTimestamp)'
+fi
