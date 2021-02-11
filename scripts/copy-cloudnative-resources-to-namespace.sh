@@ -39,7 +39,7 @@ fi
 
 kubectl get "${KIND}" -l "${RESOURCE_LABEL}" -n "${FROM_NAMESPACE}" -o jsonpath='{ range .items[*] }{ .metadata.name }{ "\n" }{ end }' | \
 while read -r name; do
-  if kubectl get "${KIND}/${name}" -n "${TO_NAMESPACE}"; then
+  if kubectl get "${KIND}/${name}" -n "${TO_NAMESPACE}" 1> /dev/null 2> /dev/null; then
     echo "*** ${KIND}/${name} already exists in ${TO_NAMESPACE} namespace"
   else
     echo "*** Copying ${KIND}/${name} from ${FROM_NAMESPACE} namespace to ${TO_NAMESPACE} namespace"
