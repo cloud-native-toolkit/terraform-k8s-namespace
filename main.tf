@@ -1,4 +1,3 @@
-provider "null" {}
 
 resource "null_resource" "delete_namespace" {
   provisioner "local-exec" {
