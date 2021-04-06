@@ -13,13 +13,15 @@ versions:
       refs:
         - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
           version: ">= 1.7.0"
+        - source: github.com/ibm-garage-cloud/terraform-ibm-ocp-vpc
+          version: ">= 1.0.0"
         - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
           version: ">= 2.0.0"
   variables:
     - name: cluster_type
       moduleRef:
         id: cluster
-        output: type_code
+        output: platform.type_code
     - name: cluster_config_file_path
       moduleRef:
         id: cluster
@@ -27,6 +29,6 @@ versions:
     - name: tls_secret_name
       moduleRef:
         id: cluster
-        output: tls_secret_name
+        output: platform.tls_secret
     - name: name
       scope: module
