@@ -43,6 +43,10 @@ variable "name_prefix" {
   default     = ""
 }
 
+variable "server_url" {
+  type        = string
+}
+
 variable "vpc_cluster" {
   type        = bool
   description = "Flag indicating that this is a vpc cluster"
