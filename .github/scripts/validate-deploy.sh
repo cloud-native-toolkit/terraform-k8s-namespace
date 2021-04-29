@@ -2,10 +2,10 @@
 
 SCRIPT_DIR=$(cd $(dirname $0); pwd -P)
 
-KUBECONFIG="~/.kube/config"
+export KUBECONFIG="~/.kube/config"
 
-NAMESPACE=$(cat terraform.tfvars | grep namespace | sed -E "s/namespace += +\"(.*)\"/\1/g")
+NAMESPACE=$(cat terraform.tfvars | grep namespace | sed -E "s/namespace *= *\"(.*)\"/\1/g")
 
 echo "Checking for namespace: ${NAMESPACE}"
 
-kubectl get namespace "${NAMESPACE}"
+#kubectl get namespace "${NAMESPACE}"
