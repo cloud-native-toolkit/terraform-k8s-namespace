@@ -18,3 +18,9 @@ variable "tls_secret_name" {
   description = "The name of the secret containing the tls certificate for the cluster"
   default     = ""
 }
+
+variable "create_operator_group" {
+  type = bool
+  description = "Flag indicating that an operator group should be created in the namespace"
+  default = true
+}
