@@ -7,8 +7,7 @@ if [[ -z "${TMP_DIR}" ]]; then
 fi
 mkdir -p "${TMP_DIR}"
 
-#if [[ $(kubectl get operatorgroup -n "${NAMESPACE}" | wc -l) -gt 0 ]]; then
-if kubectl get operatorgroup -n "${NAMESPACE}"; then
+if [[ $(kubectl get operatorgroup -n "${NAMESPACE}" | wc -l) -gt 0 ]]; then
   echo "OperatorGroup already present in namespace: ${NAMESPACE}"
   exit 0
 fi
