@@ -5,3 +5,9 @@ module "dev_cluster" {
   user       = "apikey"
   password   = var.ibmcloud_api_key
 }
+
+resource null_resource write_kubeconfig {
+  provisioner "local-exec" {
+    command = "echo 'KUBECONFIG=${module.dev_cluster.config_file_path}' > ${path.cwd}/kubeconfig"
+  }
+}
