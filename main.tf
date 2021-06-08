@@ -36,6 +36,33 @@ resource "null_resource" "create_namespace" {
   }
 }
 
+resource "null_resource" "create_operator_group" {
+  depends_on = [null_resource.create_namespace]
+  count = var.create_operator_group ? 1 : 0
+
+  triggers = {
+    name       = var.name
+    kubeconfig = var.cluster_config_file_path
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/createOperatorGroup.sh ${self.triggers.name}"
+
+    environment = {
+      KUBECONFIG = self.triggers.kubeconfig
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/deleteOpertorGroup.sh ${self.triggers.name}"
+
+    environment = {
+      KUBECONFIG = self.triggers.kubeconfig
+    }
+  }
+}
+
 resource "null_resource" "copy_cloudnative_secrets" {
   depends_on = [null_resource.create_namespace]
 
