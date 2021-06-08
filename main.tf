@@ -54,7 +54,7 @@ resource "null_resource" "create_operator_group" {
 
   provisioner "local-exec" {
     when = destroy
-    command = "${path.module}/scripts/deleteOpertorGroup.sh ${self.triggers.name}"
+    command = "${path.module}/scripts/deleteOperatorGroup.sh ${self.triggers.name}"
 
     environment = {
       KUBECONFIG = self.triggers.kubeconfig
