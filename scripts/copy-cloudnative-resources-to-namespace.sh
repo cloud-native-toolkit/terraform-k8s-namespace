@@ -2,6 +2,12 @@
 
 SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
 
+if [[ -z "${BIN_DIR}" ]]; then
+  BIN_DIR="/usr/local/bin"
+fi
+
+KUBECTL="${BIN_DIR}/kubectl"
+
 print_usage() {
     echo "Missing required arguments"
     echo "Usage: $0 {KIND} {TO_NAMESPACE} [{FROM_NAMESPACE}]"
@@ -29,21 +35,21 @@ fi
 
 RESOURCE_LABEL="grouping=garage-cloud-native-toolkit"
 
-if kubectl get "${KIND}" -l "${RESOURCE_LABEL}" -n "${FROM_NAMESPACE}" 1> /dev/null 2> /dev/null; then
+if ${KUBECTL} get "${KIND}" -l "${RESOURCE_LABEL}" -n "${FROM_NAMESPACE}" 1> /dev/null 2> /dev/null; then
   echo "*** ${KIND} found in ${FROM_NAMESPACE} namespace using label ${RESOURCE_LABEL}"
-  kubectl get "${KIND}" -l "${RESOURCE_LABEL}" -n "${FROM_NAMESPACE}"
+  ${KUBECTL} get "${KIND}" -l "${RESOURCE_LABEL}" -n "${FROM_NAMESPACE}"
 else
   echo "*** ${KIND} could not be found in ${FROM_NAMESPACE} namespace using label ${RESOURCE_LABEL}"
   exit 0
 fi
 
-kubectl get "${KIND}" -l "${RESOURCE_LABEL}" -n "${FROM_NAMESPACE}" -o jsonpath='{ range .items[*] }{ .metadata.name }{ "\n" }{ end }' | \
+${KUBECTL} get "${KIND}" -l "${RESOURCE_LABEL}" -n "${FROM_NAMESPACE}" -o jsonpath='{ range .items[*] }{ .metadata.name }{ "\n" }{ end }' | \
 while read -r name; do
-  if kubectl get "${KIND}/${name}" -n "${TO_NAMESPACE}" 1> /dev/null 2> /dev/null; then
+  if ${KUBECTL} get "${KIND}/${name}" -n "${TO_NAMESPACE}" 1> /dev/null 2> /dev/null; then
     echo "*** ${KIND}/${name} already exists in ${TO_NAMESPACE} namespace"
   else
     echo "*** Copying ${KIND}/${name} from ${FROM_NAMESPACE} namespace to ${TO_NAMESPACE} namespace"
 
-    "${SCRIPT_DIR}/kubectl-export.sh" "${KIND}" "${name}" "${FROM_NAMESPACE}" | kubectl apply -n "${TO_NAMESPACE}" -f -
+    BIN_DIR="${BIN_DIR}" "${SCRIPT_DIR}/kubectl-export.sh" "${KIND}" "${name}" "${FROM_NAMESPACE}" | ${KUBECTL} apply -n "${TO_NAMESPACE}" -f -
   fi
 done

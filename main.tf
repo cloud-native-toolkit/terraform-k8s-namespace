@@ -1,9 +1,16 @@
 
+module setup_clis {
+  source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
+
+  clis = ["jq", "kubectl"]
+}
+
 resource "null_resource" "delete_namespace" {
   provisioner "local-exec" {
     command = "${path.module}/scripts/deleteNamespace.sh ${var.name}"
 
     environment = {
+      BIN_DIR = module.setup_clis.bin_dir
       KUBECONFIG = var.cluster_config_file_path
     }
   }
@@ -15,10 +22,11 @@ resource "null_resource" "create_namespace" {
   triggers = {
     name       = var.name
     kubeconfig = var.cluster_config_file_path
+    bin_dir    = module.setup_clis.bin_dir
   }
 
   provisioner "local-exec" {
-    command = "kubectl create namespace ${self.triggers.name}"
+    command = "${self.triggers.bin_dir}kubectl create namespace ${self.triggers.name}"
 
     environment = {
       KUBECONFIG = self.triggers.kubeconfig
@@ -30,6 +38,7 @@ resource "null_resource" "create_namespace" {
     command = "${path.module}/scripts/deleteNamespace.sh ${self.triggers.name}"
 
     environment = {
+      BIN_DIR = self.triggers.bin_dir
       KUBECONFIG = self.triggers.kubeconfig
     }
   }
@@ -42,12 +51,14 @@ resource "null_resource" "create_operator_group" {
   triggers = {
     name       = var.name
     kubeconfig = var.cluster_config_file_path
+    bin_dir    = module.setup_clis.bin_dir
   }
 
   provisioner "local-exec" {
     command = "${path.module}/scripts/createOperatorGroup.sh ${self.triggers.name}"
 
     environment = {
+      BIN_DIR = self.triggers.bin_dir
       KUBECONFIG = self.triggers.kubeconfig
     }
   }
@@ -57,6 +68,7 @@ resource "null_resource" "create_operator_group" {
     command = "${path.module}/scripts/deleteOperatorGroup.sh ${self.triggers.name}"
 
     environment = {
+      BIN_DIR = self.triggers.bin_dir
       KUBECONFIG = self.triggers.kubeconfig
     }
   }
@@ -69,6 +81,7 @@ resource "null_resource" "copy_cloudnative_secrets" {
     command = "${path.module}/scripts/copy-cloudnative-resources-to-namespace.sh secret ${var.name}"
 
     environment = {
+      BIN_DIR = module.setup_clis.bin_dir
       KUBECONFIG = var.cluster_config_file_path
     }
   }
@@ -81,6 +94,7 @@ resource "null_resource" "copy_cloudnative_configmaps" {
     command = "${path.module}/scripts/copy-cloudnative-resources-to-namespace.sh configmap ${var.name}"
 
     environment = {
+      BIN_DIR = module.setup_clis.bin_dir
       KUBECONFIG = var.cluster_config_file_path
     }
   }
