@@ -26,7 +26,7 @@ resource "null_resource" "create_namespace" {
   }
 
   provisioner "local-exec" {
-    command = "${self.triggers.bin_dir}kubectl create namespace ${self.triggers.name}"
+    command = "${self.triggers.bin_dir}/kubectl create namespace ${self.triggers.name}"
 
     environment = {
       KUBECONFIG = self.triggers.kubeconfig
