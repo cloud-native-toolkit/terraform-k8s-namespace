@@ -14,9 +14,10 @@ resource "null_resource" "create_namespace" {
   }
 
   provisioner "local-exec" {
-    command = "${self.triggers.bin_dir}/kubectl create namespace ${self.triggers.name}"
+    command = "${path.module}/scripts/createNamespace.sh ${self.triggers.name}"
 
     environment = {
+      BIN_DIR = self.triggers.bin_dir
       KUBECONFIG = self.triggers.kubeconfig
     }
   }
