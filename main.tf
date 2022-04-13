@@ -5,19 +5,7 @@ module setup_clis {
   clis = ["jq", "kubectl"]
 }
 
-resource "null_resource" "delete_namespace" {
-  provisioner "local-exec" {
-    command = "${path.module}/scripts/deleteNamespace.sh ${var.name}"
-
-    environment = {
-      BIN_DIR = module.setup_clis.bin_dir
-      KUBECONFIG = var.cluster_config_file_path
-    }
-  }
-}
-
 resource "null_resource" "create_namespace" {
-  depends_on = [null_resource.delete_namespace]
 
   triggers = {
     name       = var.name
