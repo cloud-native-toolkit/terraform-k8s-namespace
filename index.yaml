@@ -13,15 +13,49 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-ibm-ocp-vpc
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
           - source: github.com/ibm-garage-cloud/terraform-ibm-iks-vpc
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
           - source: github.com/ibm-garage-cloud/terraform-ocp-login
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
+    variables:
+      - name: cluster_config_file_path
+        type: string
+        description: The path to the config file for the cluster
+        moduleRef:
+          id: cluster
+          output: config_file_path
+      - name: name
+        type: string
+        description: The namespace that should be created
+        scope: module
+      - name: create_operator_group
+        type: bool
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
+        default: true
+    version: v3.2.0
+    outputs:
+      - name: name
+        description: Namespace name
+  - dependencies:
+      - id: cluster
+        refs:
+          - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
+            version: '>= 1.7.0'
+          - source: github.com/ibm-garage-cloud/terraform-ibm-ocp-vpc
+            version: '>= 1.0.0'
+          - source: github.com/ibm-garage-cloud/terraform-ibm-iks-vpc
+            version: '>= 1.0.0'
+          - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
+            version: '>= 2.0.0'
+          - source: github.com/ibm-garage-cloud/terraform-ocp-login
+            version: '>= 1.0.0'
     variables:
       - name: cluster_config_file_path
         moduleRef:
@@ -35,7 +69,9 @@ versions:
         description: The namespace that should be created
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
     version: v3.1.4
@@ -46,15 +82,15 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-ibm-ocp-vpc
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
           - source: github.com/ibm-garage-cloud/terraform-ibm-iks-vpc
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
           - source: github.com/ibm-garage-cloud/terraform-ocp-login
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
     variables:
       - name: cluster_config_file_path
         moduleRef:
@@ -68,7 +104,9 @@ versions:
         description: The namespace that should be created
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
     version: v3.1.3
@@ -79,13 +117,13 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-ibm-ocp-vpc
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
           - source: github.com/ibm-garage-cloud/terraform-ocp-login
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
     variables:
       - name: cluster_config_file_path
         moduleRef:
@@ -99,7 +137,9 @@ versions:
         description: The namespace that should be created
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
     version: v3.1.2
@@ -110,16 +150,18 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
     variables:
       - name: cluster_type
         moduleRef:
           id: cluster
           output: type_code
         type: string
-        description: The type of cluster that should be created (openshift or ocp3 or ocp4 or kubernetes)
+        description: >-
+          The type of cluster that should be created (openshift or ocp3 or ocp4
+          or kubernetes)
       - name: cluster_config_file_path
         moduleRef:
           id: cluster
@@ -132,7 +174,7 @@ versions:
           output: tls_secret_name
         type: string
         description: The name of the secret containing the tls certificate for the cluster
-        default: ""
+        default: ''
         optional: true
       - name: name
         scope: module
@@ -140,7 +182,9 @@ versions:
         description: The namespace that should be created
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
     version: v2.8.0
@@ -151,13 +195,13 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-ibm-ocp-vpc
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
           - source: github.com/ibm-garage-cloud/terraform-ocp-login
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
     variables:
       - name: cluster_config_file_path
         moduleRef:
@@ -171,7 +215,9 @@ versions:
         description: The namespace that should be created
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
     version: v3.1.1
@@ -182,13 +228,13 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-ibm-ocp-vpc
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
           - source: github.com/ibm-garage-cloud/terraform-ocp-login
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
     variables:
       - name: cluster_config_file_path
         moduleRef:
@@ -202,7 +248,9 @@ versions:
         description: The namespace that should be created
       - name: create_operator_group
         type: bool
-        description: Flag indicating that an operator group should be created in the namespace
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
         default: true
         optional: true
     version: v3.1.0
@@ -213,13 +261,13 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-ibm-ocp-vpc
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
           - source: github.com/ibm-garage-cloud/terraform-ocp-login
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
     variables:
       - name: cluster_config_file_path
         moduleRef:
@@ -239,11 +287,11 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-ibm-ocp-vpc
-            version: ">= 1.0.0"
+            version: '>= 1.0.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
     variables:
       - name: cluster_config_file_path
         moduleRef:
@@ -263,9 +311,9 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
     variables:
       - name: cluster_type
         moduleRef:
@@ -293,16 +341,18 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
     variables:
       - name: cluster_type
         moduleRef:
           id: cluster
           output: type_code
         type: string
-        description: The type of cluster that should be created (openshift or ocp3 or ocp4 or kubernetes)
+        description: >-
+          The type of cluster that should be created (openshift or ocp3 or ocp4
+          or kubernetes)
       - name: cluster_config_file_path
         moduleRef:
           id: cluster
@@ -315,7 +365,7 @@ versions:
           output: tls_secret_name
         type: string
         description: The name of the secret containing the tls certificate for the cluster
-        default: ""
+        default: ''
         optional: true
       - name: name
         scope: module
@@ -329,16 +379,18 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
     variables:
       - name: cluster_type
         moduleRef:
           id: cluster
           output: type_code
         type: string
-        description: The type of cluster that should be created (openshift or ocp3 or ocp4 or kubernetes)
+        description: >-
+          The type of cluster that should be created (openshift or ocp3 or ocp4
+          or kubernetes)
       - name: cluster_config_file_path
         moduleRef:
           id: cluster
@@ -351,7 +403,7 @@ versions:
           output: tls_secret_name
         type: string
         description: The name of the secret containing the tls certificate for the cluster
-        default: ""
+        default: ''
         optional: true
       - name: name
         scope: module
@@ -365,16 +417,18 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
     variables:
       - name: cluster_type
         moduleRef:
           id: cluster
           output: type_code
         type: string
-        description: The type of cluster that should be created (openshift or ocp3 or ocp4 or kubernetes)
+        description: >-
+          The type of cluster that should be created (openshift or ocp3 or ocp4
+          or kubernetes)
       - name: cluster_config_file_path
         moduleRef:
           id: cluster
@@ -399,16 +453,18 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
     variables:
       - name: cluster_type
         moduleRef:
           id: cluster
           output: type_code
         type: string
-        description: The type of cluster that should be created (openshift or ocp3 or ocp4 or kubernetes)
+        description: >-
+          The type of cluster that should be created (openshift or ocp3 or ocp4
+          or kubernetes)
       - name: cluster_config_file_path
         moduleRef:
           id: cluster
@@ -433,16 +489,18 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
     variables:
       - name: cluster_type
         moduleRef:
           id: cluster
           output: type_code
         type: string
-        description: The type of cluster that should be created (openshift or ocp3 or ocp4 or kubernetes)
+        description: >-
+          The type of cluster that should be created (openshift or ocp3 or ocp4
+          or kubernetes)
       - name: cluster_config_file_path
         moduleRef:
           id: cluster
@@ -467,16 +525,18 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
     variables:
       - name: cluster_type
         moduleRef:
           id: cluster
           output: type_code
         type: string
-        description: The type of cluster that should be created (openshift or ocp3 or ocp4 or kubernetes)
+        description: >-
+          The type of cluster that should be created (openshift or ocp3 or ocp4
+          or kubernetes)
       - name: cluster_config_file_path
         moduleRef:
           id: cluster
@@ -501,16 +561,18 @@ versions:
       - id: cluster
         refs:
           - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-            version: ">= 1.7.0"
+            version: '>= 1.7.0'
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-            version: ">= 2.0.0"
+            version: '>= 2.0.0'
     variables:
       - name: cluster_type
         moduleRef:
           id: cluster
           output: type_code
         type: string
-        description: The type of cluster that should be created (openshift or ocp3 or ocp4 or kubernetes)
+        description: >-
+          The type of cluster that should be created (openshift or ocp3 or ocp4
+          or kubernetes)
       - name: cluster_config_file_path
         moduleRef:
           id: cluster
