@@ -23,4 +23,4 @@ if kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
   exit 0
 fi
 
-kubectl create namespace "${NAMESPACE}"
+kubectl create namespace "${NAMESPACE}" --dry-run=client -o yaml | kubectl apply -f -
