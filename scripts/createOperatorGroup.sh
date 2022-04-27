@@ -31,4 +31,4 @@ spec:
     - ${NAMESPACE}
 EOT
 
-${KUBECTL} create -n "${NAMESPACE}" -f "${YAML_FILE}"
+${KUBECTL} apply -n "${NAMESPACE}" -f "${YAML_FILE}"
