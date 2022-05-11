@@ -2,16 +2,13 @@
 
 NAMESPACE="$1"
 
-if [[ -z "${BIN_DIR}" ]]; then
-  BIN_DIR="/usr/local/bin"
+if [[ -n "${BIN_DIR}" ]]; then
+  export PATH="${BIN_DIR}:${PATH}"
 fi
 
-KUBECTL="${BIN_DIR}/kubectl"
-
-
-if ${KUBECTL} get -n "${NAMESPACE}" operatorgroup "${NAMESPACE}-operator-group"; then
+if kubectl get -n "${NAMESPACE}" operatorgroup "${NAMESPACE}-operator-group"; then
   echo "Deleting operator group: ${NAMESPACE}/${NAMESPACE}-operator-group"
-  ${KUBECTL} delete -n "${NAMESPACE}" operatorgroup "${NAMESPACE}-operator-group"
+  kubectl delete -n "${NAMESPACE}" operatorgroup "${NAMESPACE}-operator-group"
 else
   echo "Unable to find operator group: ${NAMESPACE}/${NAMESPACE}-operator-group"
 fi

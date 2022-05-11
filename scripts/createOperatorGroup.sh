@@ -7,13 +7,11 @@ if [[ -z "${TMP_DIR}" ]]; then
 fi
 mkdir -p "${TMP_DIR}"
 
-if [[ -z "${BIN_DIR}" ]]; then
-  BIN_DIR="/usr/local/bin"
+if [[ -n "${BIN_DIR}" ]]; then
+  export PATH="${BIN_DIR}:${PATH}"
 fi
 
-KUBECTL="${BIN_DIR}/kubectl"
-
-if [[ $(${KUBECTL} get operatorgroup -n "${NAMESPACE}" | wc -l) -gt 0 ]]; then
+if [[ $(kubectl get operatorgroup -n "${NAMESPACE}" | wc -l) -gt 0 ]]; then
   echo "OperatorGroup already present in namespace: ${NAMESPACE}"
   exit 0
 fi
@@ -31,4 +29,4 @@ spec:
     - ${NAMESPACE}
 EOT
 
-${KUBECTL} apply -n "${NAMESPACE}" -f "${YAML_FILE}"
+kubectl apply -n "${NAMESPACE}" -f "${YAML_FILE}"

@@ -20,8 +20,9 @@ if [ -z "$1" ]; then
     exit
 fi
 
-JQ=$(command -v "${BIN_DIR}/jq" || command -v jq)
-KUBECTL=$(command -v "${BIN_DIR}/kubectl" || command -v kubectl)
+if [[ -n "${BIN_DIR}" ]]; then
+  export PATH="${BIN_DIR}:${PATH}"
+fi
 
 set -eo pipefail
 
@@ -33,20 +34,15 @@ need() {
 
 # checking pre-reqs
 need "curl"
-
-if [[ -z "${JQ}" ]]; then
-  die "jq is missing but required"
-fi
-if [[ -z "${KUBECTL}" ]]; then
-  die "kubectl is missing but required"
-fi
+need "jq"
+need "kubectl"
 
 PROJECT="$1"
 shift
 
 test -n "$PROJECT" || die "Missing arguments: kill-ns <namespace>"
 
-${KUBECTL} proxy &>/dev/null &
+kubectl proxy &>/dev/null &
 PROXY_PID=$!
 killproxy () {
 	kill $PROXY_PID
@@ -55,6 +51,6 @@ trap killproxy EXIT
 
 sleep 1 # give the proxy a second
 
-${KUBECTL} get namespace "$PROJECT" -o json | ${JQ} 'del(.spec.finalizers[] | select("kubernetes"))' | curl -s -k -H "Content-Type: application/json" -X PUT -o /dev/null --data-binary @- http://localhost:8001/api/v1/namespaces/$PROJECT/finalize && echo "Killed namespace: $PROJECT"
+kubectl get namespace "$PROJECT" -o json | jq 'del(.spec.finalizers[] | select("kubernetes"))' | curl -s -k -H "Content-Type: application/json" -X PUT -o /dev/null --data-binary @- http://localhost:8001/api/v1/namespaces/$PROJECT/finalize && echo "Killed namespace: $PROJECT"
 
 # proxy will get killed by the trap

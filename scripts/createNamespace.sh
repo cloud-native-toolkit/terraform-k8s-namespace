@@ -2,7 +2,7 @@
 
 SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
 
-if [[ -z "${BIN_DIR}" ]]; then
+if [[ -n "${BIN_DIR}" ]]; then
   export PATH="${BIN_DIR}:${PATH}"
 fi
 
