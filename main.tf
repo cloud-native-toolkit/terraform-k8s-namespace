@@ -1,8 +1,6 @@
 
-module setup_clis {
-  source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
-
-  clis = ["jq", "kubectl"]
+data clis_check clis {
+  clis = ["kubectl","jq"]
 }
 
 resource "null_resource" "create_namespace" {
@@ -10,7 +8,7 @@ resource "null_resource" "create_namespace" {
   triggers = {
     name       = var.name
     kubeconfig = var.cluster_config_file_path
-    bin_dir    = module.setup_clis.bin_dir
+    bin_dir    = data.clis_check.clis.bin_dir
   }
 
   provisioner "local-exec" {
@@ -40,7 +38,7 @@ resource "null_resource" "create_operator_group" {
   triggers = {
     name       = var.name
     kubeconfig = var.cluster_config_file_path
-    bin_dir    = module.setup_clis.bin_dir
+    bin_dir    = data.clis_check.clis.bin_dir
   }
 
   provisioner "local-exec" {
@@ -70,7 +68,7 @@ resource "null_resource" "copy_cloudnative_secrets" {
     command = "${path.module}/scripts/copy-cloudnative-resources-to-namespace.sh secret ${var.name}"
 
     environment = {
-      BIN_DIR = module.setup_clis.bin_dir
+      BIN_DIR = data.clis_check.clis.bin_dir
       KUBECONFIG = var.cluster_config_file_path
     }
   }
@@ -83,7 +81,7 @@ resource "null_resource" "copy_cloudnative_configmaps" {
     command = "${path.module}/scripts/copy-cloudnative-resources-to-namespace.sh configmap ${var.name}"
 
     environment = {
-      BIN_DIR = module.setup_clis.bin_dir
+      BIN_DIR = data.clis_check.clis.bin_dir
       KUBECONFIG = var.cluster_config_file_path
     }
   }
