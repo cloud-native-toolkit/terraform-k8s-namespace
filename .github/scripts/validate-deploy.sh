@@ -17,6 +17,11 @@ if ! kubectl get namespace "${NAMESPACE}"; then
   exit 1
 fi
 
+if ! kubectl get operatorgroup -A 1> /dev/null 2> /dev/null; then
+  echo "OperatorGroup resource not available in cluster"
+  exit 0
+fi
+
 if ! kubectl get operatorgroup "${NAMESPACE}-operator-group" -n "${NAMESPACE}"; then
   echo "Operator group not found: ${NAMESPACE}-operator-group" >&2
   exit 1

@@ -1,18 +1,24 @@
 
 data clis_check clis {
-  clis = ["kubectl","jq"]
+  clis = ["kubectl", "jq"]
+}
+
+resource random_string uuid {
+  length  = 16
+  special = false
 }
 
 resource "null_resource" "create_namespace" {
 
   triggers = {
     name       = var.name
+    uuid       = random_string.uuid.result
     kubeconfig = var.cluster_config_file_path
     bin_dir    = data.clis_check.clis.bin_dir
   }
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/createNamespace.sh ${self.triggers.name}"
+    command = "${path.module}/scripts/createNamespace.sh ${self.triggers.name} ${self.triggers.uuid}"
 
     environment = {
       BIN_DIR = self.triggers.bin_dir
@@ -22,7 +28,7 @@ resource "null_resource" "create_namespace" {
 
   provisioner "local-exec" {
     when    = destroy
-    command = "${path.module}/scripts/deleteNamespace.sh ${self.triggers.name}"
+    command = "${path.module}/scripts/deleteNamespace.sh ${self.triggers.name} ${self.triggers.uuid}"
 
     environment = {
       BIN_DIR = self.triggers.bin_dir
@@ -37,12 +43,13 @@ resource "null_resource" "create_operator_group" {
 
   triggers = {
     name       = var.name
+    uuid       = random_string.uuid.result
     kubeconfig = var.cluster_config_file_path
     bin_dir    = data.clis_check.clis.bin_dir
   }
 
   provisioner "local-exec" {
-    command = "${path.module}/scripts/createOperatorGroup.sh ${self.triggers.name}"
+    command = "${path.module}/scripts/createOperatorGroup.sh ${self.triggers.name} ${self.triggers.uuid}"
 
     environment = {
       BIN_DIR = self.triggers.bin_dir
@@ -52,7 +59,7 @@ resource "null_resource" "create_operator_group" {
 
   provisioner "local-exec" {
     when = destroy
-    command = "${path.module}/scripts/deleteOperatorGroup.sh ${self.triggers.name}"
+    command = "${path.module}/scripts/deleteOperatorGroup.sh ${self.triggers.name} ${self.triggers.uuid}"
 
     environment = {
       BIN_DIR = self.triggers.bin_dir
