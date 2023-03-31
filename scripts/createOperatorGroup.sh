@@ -12,6 +12,11 @@ if [[ -n "${BIN_DIR}" ]]; then
   export PATH="${BIN_DIR}:${PATH}"
 fi
 
+if ! kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
+  echo "Namespace does not exist: ${NAMESPACE}"
+  exit 0
+fi
+
 if ! kubectl get operatorgroup -A 1> /dev/null 2> /dev/null; then
   echo "OperatorGroup resource not found. It looks like OLM has not been installed on this cluster..."
   exit 0
