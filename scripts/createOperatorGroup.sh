@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 NAMESPACE="$1"
+UUID="$2"
 
 if [[ -z "${TMP_DIR}" ]]; then
   TMP_DIR="./.tmp"
@@ -18,15 +19,15 @@ fi
 
 YAML_FILE="${TMP_DIR}/${NAMESPACE}-operator-group.yaml"
 
-cat <<EOT >> "${YAML_FILE}"
+cat <<EOT | kubectl apply -f -
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
   name: ${NAMESPACE}-operator-group
   namespace: ${NAMESPACE}
+  labels:
+    created-by: ${UUID}
 spec:
   targetNamespaces:
     - ${NAMESPACE}
 EOT
-
-kubectl apply -n "${NAMESPACE}" -f "${YAML_FILE}"
