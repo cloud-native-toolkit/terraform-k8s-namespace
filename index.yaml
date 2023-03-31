@@ -30,6 +30,31 @@ versions:
           Flag indicating that an operator group should be created in the
           namespace
         default: true
+    version: v3.2.5
+    outputs:
+      - name: name
+        description: Namespace name
+  - dependencies:
+      - id: cluster
+        interface: github.com/cloud-native-toolkit/automation-modules#cluster
+        refs: []
+    variables:
+      - name: cluster_config_file_path
+        type: string
+        description: The path to the config file for the cluster
+        moduleRef:
+          id: cluster
+          output: config_file_path
+      - name: name
+        type: string
+        description: The namespace that should be created
+        scope: module
+      - name: create_operator_group
+        type: bool
+        description: >-
+          Flag indicating that an operator group should be created in the
+          namespace
+        default: true
     version: v3.2.4
     outputs:
       - name: name
